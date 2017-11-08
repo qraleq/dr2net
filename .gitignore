@@ -259,3 +259,5 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/dr2net/dataset/images/testing
+/dr2net/dataset/images

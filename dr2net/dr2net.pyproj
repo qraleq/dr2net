@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>519df312-fee6-444e-9f88-7e9a1df0f7cd</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>dr2net.py</StartupFile>
+    <StartupFile>dr2net_residual.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -21,7 +21,10 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="dr2net.py" />
+    <Compile Include="dr2net_fc_At.py" />
+    <Compile Include="dr2net_fw_bw.py" />
+    <Compile Include="dr2net_linear_At.py" />
+    <Compile Include="dr2net_residual.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
