@@ -44,7 +44,8 @@ def build_resnet(patch_est):
     conv2 = tf.layers.conv2d(conv1, filters=32, kernel_size=1, strides=(1,1), padding='same', activation=tf.nn.relu)
     conv3 = tf.layers.conv2d(conv2, filters=1, kernel_size=7, strides=(1,1), padding='same')
 
-    patch_est_residual = tf.reshape(conv3, [-1, 256], name='result')
+    patch_est_residual = tf.reshape(conv3, [-1, 256])
+    patch_est_residual = tf.cast(patch_est_residual, tf.float64)
 
     return patch_est_residual
 
@@ -59,7 +60,7 @@ def build_loss(patch, patch_est):
 training_dataset = tf.contrib.data.Dataset.from_tensor_slices((training_measurements, training_patches))
 validation_dataset = tf.contrib.data.Dataset.from_tensor_slices((validation_measurements, validation_patches))
 
-nEpochs = 10
+nEpochs = 50
 training_dataset = training_dataset.batch(1000)
 validation_dataset = validation_dataset.batch(3000)
 
@@ -74,18 +75,16 @@ validation_init_op = iterator.make_initializer(validation_dataset)
 patch_est_linear = build_linear_mapping(next_measurement)
 loss_linear = build_loss(patch_est_linear, next_patch)
 
-
-
 patch_est_resnet = build_resnet(patch_est_linear)
-loss_resnet = build_loss(patch_est_resnet, patch_est_linear)
+loss_resnet = build_loss(patch_est_resnet + patch_est_linear, next_patch)
 
 joint_loss = loss_linear + loss_resnet
 
 # define optimization procedure
 learning_rate = 0.01
 joint_op = tf.train.AdamOptimizer(learning_rate).minimize(joint_loss)
-linear_op = tf.train.AdamOptimizer().minimize(loss_linear)
-resnet_op = tf.train.AdamOptimizer().minimize(loss_resnet)
+linear_op = tf.train.AdamOptimizer(learning_rate).minimize(loss_linear)
+resnet_op = tf.train.AdamOptimizer(learning_rate).minimize(loss_resnet)
 
 
 with tf.Session() as sess:

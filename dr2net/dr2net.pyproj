@@ -21,10 +21,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="dr2net_fc_At.py" />
     <Compile Include="dr2net_fw_bw.py" />
-    <Compile Include="dr2net_linear_At.py" />
-    <Compile Include="dr2net_residual.py" />
+    <Compile Include="dr2net_linear_mapping.py" />
+    <Compile Include="dr2net_residual_learning.py" />
     <Compile Include="evaluate_model.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
