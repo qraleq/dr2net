@@ -8,8 +8,8 @@ import os
 
 f = sio.loadmat('Y:/Projects/Python Projects/dr2net/dr2net/dataset/train_dataset')
 
-# set block_size and measurement_rate
-block_size = 16
+# set blockSize and measurement_rate
+blockSize = 16
 measurement_rate = 0.25
 
 # load measurements and patches dataset
@@ -19,11 +19,11 @@ patches = f['patches_vec']
 patches = np.squeeze(patches).transpose([1,0])
 
 def build_inverse_mapping(measurement):
-    patch_est = tf.layers.dense(measurement, block_size ** 2, use_bias=False, kernel_initializer=tf.truncated_normal_initializer(0.0, 0.01, dtype=tf.float64), name='inverse')
+    patch_est = tf.layers.dense(measurement, blockSize ** 2, use_bias=False, kernel_initializer=tf.truncated_normal_initializer(0.0, 0.01, dtype=tf.float64), name='inverse')
     return patch_est
 
 def build_forward_mapping(patch):
-    measurement_est = tf.layers.dense(patch, int(np.ceil(measurement_rate * (block_size ** 2))), use_bias=False, kernel_initializer=tf.truncated_normal_initializer(0.0, 0.01, dtype=tf.float64), name='forward')
+    measurement_est = tf.layers.dense(patch, int(np.ceil(measurement_rate * (blockSize ** 2))), use_bias=False, kernel_initializer=tf.truncated_normal_initializer(0.0, 0.01, dtype=tf.float64), name='forward')
     return measurement_est
 
 # define loss function for model

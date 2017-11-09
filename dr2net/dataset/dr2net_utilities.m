@@ -115,7 +115,7 @@ filenames = dir('images\testing');
 filenames = filenames(~[filenames.isdir])
 
 % load test image i
-for i = 3
+for i = 30
    
     image = im2double(imread([filenames(i).folder, '/', filenames(i).name]));
     

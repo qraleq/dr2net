@@ -7,8 +7,8 @@ import os
 
 f = sio.loadmat('Y:/Projects/Python Projects/dr2net/dr2net/dataset/train_dataset')
 
-# set block_size and measurement_rate
-block_size = 16
+# set blockSize and measurement_rate
+blockSize = 16
 measurement_rate = 0.25
 
 # load measurements and patches dataset
@@ -19,7 +19,7 @@ patches = np.squeeze(patches).transpose([1,0])
 
 # define linear model to train
 def build_linear_mapping(measurement):
-    phi_inv = tf.Variable(tf.random_normal([int(np.ceil(measurement_rate * (block_size ** 2))), (block_size ** 2)], mean = 0.0, stddev=0.01, dtype=tf.float64))
+    phi_inv = tf.Variable(tf.random_normal([int(np.ceil(measurement_rate * (blockSize ** 2))), (blockSize ** 2)], mean = 0.0, stddev=0.01, dtype=tf.float64))
 
     patch_est = tf.matmul(measurement, phi_inv) 
 

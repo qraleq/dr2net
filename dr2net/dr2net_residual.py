@@ -7,8 +7,8 @@ import os
 
 f = sio.loadmat('Y:/Projects/Python Projects/dr2net/dr2net/dataset/train_dataset')
 
-# set block_size and measurement_rate
-block_size = 16
+# set blockSize and measurement_rate
+blockSize = 16
 measurement_rate = 0.25
 
 # load measurements and patches dataset
@@ -18,12 +18,12 @@ patches = f['patches_vec']
 patches = np.squeeze(patches).transpose([1,0])
 
 def build_linear_mapping(measurement):
-    patch_est_linear = tf.layers.dense(measurement, block_size ** 2, use_bias=False, kernel_initializer=tf.truncated_normal_initializer(0.0, 0.01, dtype=tf.float64), name='fc1')
+    patch_est_linear = tf.layers.dense(measurement, blockSize ** 2, use_bias=False, kernel_initializer=tf.truncated_normal_initializer(0.0, 0.01, dtype=tf.float64), name='fc1')
 
     return patch_est_linear
 
 def build_resnet(patch_est):
-    patch_est = tf.reshape(patch_est, shape=[-1, block_size, block_size, 1])
+    patch_est = tf.reshape(patch_est, shape=[-1, blockSize, blockSize, 1])
 
     patch_est = tf.cast(patch_est, tf.float32)
 

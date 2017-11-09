@@ -1,0 +1,2 @@
+model_checkpoint_path: "Y:/Projects/Python Projects/dr2net/dr2net/dataset/tmp/model.ckpt"
+all_model_checkpoint_paths: "Y:/Projects/Python Projects/dr2net/dr2net/dataset/tmp/model.ckpt"
