@@ -28,6 +28,16 @@ validation_measurements = np.squeeze(validation_measurements).transpose([1,0])
 validation_patches = f['patches_vec']
 validation_patches = np.squeeze(validation_patches).transpose([1,0])
 
+## define linear model to train
+## uses matrix multiplication instead of single fully connected layer
+#def build_linear_mapping(measurement):
+#    phi_inv = tf.Variable(tf.random_normal([int(np.ceil(measurement_rate * (blockSize ** 2))), (blockSize ** 2)], mean = 0.0, stddev=0.01, dtype=tf.float64))
+
+#    patch_est = tf.matmul(measurement, phi_inv) 
+
+#    return patch_est, phi_inv
+
+
 # define linear mapping operation using one fully connected layer
 def build_linear_mapping(measurement):
     patch_est = tf.layers.dense(measurement, blockSize ** 2, use_bias=False, kernel_initializer=tf.truncated_normal_initializer(0.0, 0.0005, dtype=tf.float64), name='fc')

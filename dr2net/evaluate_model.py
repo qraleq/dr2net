@@ -30,7 +30,11 @@ with tf.Session() as sess:
 
     measurement_placeholder = graph.get_tensor_by_name('IteratorGetNext:0')
     patch_placeholder = graph.get_tensor_by_name('IteratorGetNext:1')
-    patch_est_placeholder = graph.get_tensor_by_name('fc/MatMul:0')
+
+    #patch_est_placeholder = graph.get_tensor_by_name('fc/MatMul:0')
+    patch_est_placeholder = graph.get_tensor_by_name('result:0')
+    
+    #patch_est_placeholder
     test_patches = np.zeros((1,256))
 
 
