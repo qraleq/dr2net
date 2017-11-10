@@ -8,7 +8,14 @@ blockSize = 16;
 % create random measurement matrix with measurement_rate*blockSize^2
 measurement_rate = 0.25;
 phi = randn(ceil(measurement_rate*blockSize^2), blockSize^2);
-save('phi', 'phi')
+% save('phi', 'phi')
+
+psi = kron(dctmtx(blockSize)',dctmtx(blockSize)')
+save('psi', 'psi')
+
+
+psi_1d = full(wmpdictionary(blockSize, 'lstcpt', {'dct'}));
+psi = kron(psi_1d, psi_1d);
 
 %% CREATE TRAINING DATASET
 % get all image names from directory

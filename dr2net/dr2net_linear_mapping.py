@@ -54,7 +54,7 @@ def build_loss(patch, patch_est):
 training_dataset = tf.contrib.data.Dataset.from_tensor_slices((training_measurements, training_patches))
 validation_dataset = tf.contrib.data.Dataset.from_tensor_slices((validation_measurements, validation_patches))
 
-nEpochs = 30
+nEpochs = 10
 training_dataset = training_dataset.batch(1000)
 validation_dataset = validation_dataset.batch(3000)
 
@@ -104,5 +104,5 @@ with tf.Session() as sess:
 
     sio.savemat('Y:/Projects/Python Projects/dr2net/dr2net/dataset/phi_inv.mat', {'phi_inv':phi_inv})
     
-    tf.train.Saver().save(sess, 'Y:/Projects/Python Projects/dr2net/dr2net/dataset/tmp/model.ckpt')
+    tf.train.Saver().save(sess, 'Y:/Projects/Python Projects/dr2net/dr2net/dataset/tmp/model_linear_mapping.ckpt', latest_filename='checkpoint_linear_mapping')
 

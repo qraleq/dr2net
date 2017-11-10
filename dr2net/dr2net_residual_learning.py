@@ -13,7 +13,7 @@ blockSize = 16
 measurement_rate = 0.25
 
 # load measurements and patches from training dataset
-f = sio.loadmat('Y:/Projects/Python Projects/dr2net/dr2net/dataset/training_dataset')
+f = sio.loadmat(os.path.dirname(os.path.abspath(__file__)) + '/dataset/training_dataset')
 
 training_measurements = f['measurements']
 training_measurements = np.squeeze(training_measurements).transpose([1,0])
@@ -21,7 +21,7 @@ training_patches = f['patches_vec']
 training_patches = np.squeeze(training_patches).transpose([1,0])
 
 # load measurements and patches from validation dataset
-f = sio.loadmat('Y:/Projects/Python Projects/dr2net/dr2net/dataset/training_dataset')
+f = sio.loadmat(os.path.dirname(os.path.abspath(__file__)) + '/dataset/validation_dataset')
 
 validation_measurements = f['measurements']
 validation_measurements = np.squeeze(validation_measurements).transpose([1,0])
@@ -60,9 +60,9 @@ def build_loss(patch, patch_est):
 training_dataset = tf.contrib.data.Dataset.from_tensor_slices((training_measurements, training_patches))
 validation_dataset = tf.contrib.data.Dataset.from_tensor_slices((validation_measurements, validation_patches))
 
-nEpochs = 50
-training_dataset = training_dataset.batch(1000)
-validation_dataset = validation_dataset.batch(3000)
+nEpochs = 30
+training_dataset = training_dataset.batch(500)
+validation_dataset = validation_dataset.batch(1000)
 
 # initialize iterator
 iterator = Iterator.from_structure(training_dataset.output_types, training_dataset.output_shapes)
@@ -115,7 +115,7 @@ with tf.Session() as sess:
     phi_inv = tf.get_default_graph().get_tensor_by_name('fc' + '/kernel:0')
     phi_inv = sess.run(phi_inv)
 
-    sio.savemat('Y:/Projects/Python Projects/dr2net/dr2net/dataset/phi_inv.mat', {'phi_inv':phi_inv})
+    sio.savemat(os.path.dirname(os.path.abspath(__file__)) + '/dataset/phi_inv.mat', {'phi_inv':phi_inv})
     
-    tf.train.Saver().save(sess, 'Y:/Projects/Python Projects/dr2net/dr2net/dataset/tmp/model.ckpt')
+    tf.train.Saver().save(sess, os.path.dirname(os.path.abspath(__file__)) + '/dataset/tmp/model_residual_learning.ckpt', latest_filename='checkpoint_residual_learning')
 

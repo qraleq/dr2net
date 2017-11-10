@@ -4,11 +4,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.io as sio
 from skimage import color, io, filters
-#import dr2net_fc_At
+import os
 
-image = color.rgb2gray(io.imread('Y:/Projects/Python Projects/dr2net/dr2net/dataset/images/testing/bear.tif'))
+image = color.rgb2gray(io.imread(os.path.dirname(os.path.abspath(__file__))+'/dataset/images/testing/cameraman.tif'))
 
-f = sio.loadmat('Y:/Projects/Python Projects/dr2net/dr2net/dataset/phi.mat')
+f = sio.loadmat(os.path.dirname(os.path.abspath(__file__))+'/dataset/phi.mat')
 phi = f['phi']
 
 # img_plt = plt.imshow(phi)
@@ -22,11 +22,16 @@ imH, imW = image.shape[:2]
 blockSize = 16
 measurement_rate = 0.25
 
+def psnr(image1, image2):
+    mse = np.mean(np.square(image1-image2))
+    PIXEL_MAX = 1
+    return 10*np.log10(PIXEL_MAX**2/mse)
+
 
 with tf.Session() as sess:
     dir(tf.contrib)
-    saver = tf.train.import_meta_graph('Y:/Projects/Python Projects/dr2net/dr2net/dataset/tmp/model.ckpt.meta')
-    saver.restore(sess, tf.train.latest_checkpoint('Y:/Projects/Python Projects/dr2net/dr2net/dataset/tmp/', latest_filename=None))
+    saver = tf.train.import_meta_graph(os.path.dirname(os.path.abspath(__file__))+ '/dataset/tmp/model_residual_learning.ckpt.meta')
+    saver.restore(sess, tf.train.latest_checkpoint(os.path.dirname(os.path.abspath(__file__))+'/dataset/tmp/', latest_filename='checkpoint_residual_learning'))
 
     graph = tf.get_default_graph()
 
@@ -34,11 +39,9 @@ with tf.Session() as sess:
     patch_placeholder = graph.get_tensor_by_name('IteratorGetNext:1')
 
     patch_est_linear_placeholder = graph.get_tensor_by_name('fc/MatMul:0')    
-    
     patch_est_resnet_placeholder = graph.get_tensor_by_name('Reshape_1:0')
     
     test_patches = np.zeros((1,256))
-
 
     for r in np.arange(imH - blockSize + 1, step=blockSize):
         for c in np.arange(imW - blockSize + 1, step=blockSize):
@@ -61,4 +64,7 @@ with tf.Session() as sess:
     plt.subplot(2,2,4)
     plt.imshow(reconstruction_resnet)
     plt.show()
-
+    
+    print(psnr(image, reconstruction))
+    print(psnr(image, reconstruction_linear))
+    print(psnr(image, reconstruction_resnet))
