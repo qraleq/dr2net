@@ -6,7 +6,7 @@ import scipy.io as sio
 from skimage import color, io, filters
 import os
 
-image = color.rgb2gray(io.imread(os.path.dirname(os.path.abspath(__file__))+'/dataset/images/testing/cameraman.tif'))
+image = color.rgb2gray(io.imread(os.path.dirname(os.path.abspath(__file__))+'/dataset/images/testing/001.jpg'))
 
 f = sio.loadmat(os.path.dirname(os.path.abspath(__file__))+'/dataset/phi.mat')
 phi = f['phi']
@@ -22,8 +22,13 @@ imH, imW = image.shape[:2]
 blockSize = 16
 measurement_rate = 0.25
 
+
+def im2double(image):
+    out = (image-np.min(image)/(np.max(image)-np.min(image)))
+    return out
+
 def psnr(image1, image2):
-    mse = np.mean(np.square(image1-image2))
+    mse = np.mean(np.square(im2double(image)-im2double(image2)))
     PIXEL_MAX = 1
     return 10*np.log10(PIXEL_MAX**2/mse)
 
@@ -54,7 +59,11 @@ with tf.Session() as sess:
             reconstruction[r:r + blockSize, c:c + blockSize] = np.reshape(patch_est_linear + patch_est_resnet, [16, 16])
             reconstruction_resnet[r:r + blockSize, c:c + blockSize] = np.reshape(patch_est_resnet, [16, 16])
             reconstruction_linear[r:r + blockSize, c:c + blockSize] = np.reshape(patch_est_linear, [16, 16])
-        
+
+    print(psnr(image, reconstruction))
+    print(psnr(image, reconstruction_linear))
+    print(psnr(image, reconstruction_resnet))
+    
     plt.subplot(2,2,1)
     plt.imshow(image)
     plt.subplot(2,2,2)
@@ -65,6 +74,4 @@ with tf.Session() as sess:
     plt.imshow(reconstruction_resnet)
     plt.show()
     
-    print(psnr(image, reconstruction))
-    print(psnr(image, reconstruction_linear))
-    print(psnr(image, reconstruction_resnet))
+

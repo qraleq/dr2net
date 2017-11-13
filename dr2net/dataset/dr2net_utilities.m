@@ -162,3 +162,7 @@ subplot(121), imagesc(image), title('Original'), axis image
 subplot(122), imagesc(reconstruction), title('Reconstruction'), axis image
 
 psnr = psnr(image, reconstruction)
+
+
+
+

@@ -21,10 +21,14 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="dr2net_fw_bw.py" />
+    <Compile Include="autoencoder.py" />
     <Compile Include="dr2net_linear_mapping.py" />
     <Compile Include="dr2net_residual_learning.py" />
-    <Compile Include="evaluate_model.py" />
+    <Compile Include="evaluate_model_autoencoder.py" />
+    <Compile Include="evaluate_model_linear_mapping.py" />
+    <Compile Include="evaluate_model_residual_learning.py" />
+    <Compile Include="evaluate_sparse_linear_mapping.py" />
+    <Compile Include="sparse_linear_mapping.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

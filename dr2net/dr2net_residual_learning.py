@@ -31,7 +31,7 @@ validation_patches = np.squeeze(validation_patches).transpose([1,0])
 
 # define linear mapping operation using one fully connected layer
 def build_linear_mapping(measurement):
-    patch_est = tf.layers.dense(measurement, blockSize ** 2, use_bias=False, kernel_initializer=tf.truncated_normal_initializer(0.0, 0.0005, dtype=tf.float64), name='fc')
+    patch_est = tf.layers.dense(measurement, blockSize ** 2, use_bias=False, kernel_initializer=tf.truncated_normal_initializer(0.0, 0.01, dtype=tf.float64), name='fc')
 
     return patch_est
 
@@ -40,9 +40,9 @@ def build_resnet(patch_est):
 
     patch_est = tf.cast(patch_est, tf.float32)
 
-    conv1 = tf.layers.conv2d(patch_est, filters=64, kernel_size=11, strides=(1,1), padding='same', activation=tf.nn.relu, kernel_initializer=tf.random_normal_initializer(0.0, 0.01))
-    conv2 = tf.layers.conv2d(conv1, filters=32, kernel_size=1, strides=(1,1), padding='same', activation=tf.nn.relu)
-    conv3 = tf.layers.conv2d(conv2, filters=1, kernel_size=7, strides=(1,1), padding='same')
+    conv1 = tf.layers.conv2d(patch_est, filters=64, kernel_size=11, strides=(1,1), padding='same', activation=tf.nn.relu, kernel_initializer=tf.truncated_normal_initializer(0.0, 0.01))
+    conv2 = tf.layers.conv2d(conv1, filters=32, kernel_size=1, strides=(1,1), padding='same', activation=tf.nn.relu, kernel_initializer=tf.truncated_normal_initializer(0.0, 0.01))
+    conv3 = tf.layers.conv2d(conv2, filters=1, kernel_size=7, strides=(1,1), padding='same', kernel_initializer=tf.truncated_normal_initializer(0.0, 0.01))
 
     patch_est_residual = tf.reshape(conv3, [-1, 256])
     patch_est_residual = tf.cast(patch_est_residual, tf.float64)
@@ -60,7 +60,7 @@ def build_loss(patch, patch_est):
 training_dataset = tf.contrib.data.Dataset.from_tensor_slices((training_measurements, training_patches))
 validation_dataset = tf.contrib.data.Dataset.from_tensor_slices((validation_measurements, validation_patches))
 
-nEpochs = 30
+nEpochs = 10
 training_dataset = training_dataset.batch(500)
 validation_dataset = validation_dataset.batch(1000)
 

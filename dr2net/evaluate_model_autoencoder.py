@@ -6,7 +6,7 @@ import scipy.io as sio
 from skimage import color, io, filters
 import os
 
-image = color.rgb2gray(io.imread(os.path.dirname(os.path.abspath(__file__))+'/dataset/images/testing/house.tif'))
+image = color.rgb2gray(io.imread(os.path.dirname(os.path.abspath(__file__))+'/dataset/images/testing/001.jpg'))
 
 f = sio.loadmat(os.path.dirname(os.path.abspath(__file__))+'/dataset/phi.mat')
 phi = f['phi']
